@@ -21,16 +21,26 @@ cook_book = cook_book()
 
 def get_shop_list_by_dishes(dishes, person_count):
     my_dict = {}
+    shop_dict = {}
+
     for dish, composition in cook_book.items():
         if dish in dishes:
             for ingr in composition:
-                composition_key = ingr['ingredient_name']
-                quantity_composition = int(ingr['quantity']) * person_count
+                product = ingr['ingredient_name']
+                quantity_composition = int(ingr['quantity'])
                 measure_composition = ingr['measure']
-                comp = dict(zip(['quantity', 'measure'], [quantity_composition, measure_composition]))
-                my_dict[ingr['ingredient_name']] = comp
-    print(len(my_dict))
-    print(my_dict)
+                if product not in my_dict:
+                    my_dict[product] = quantity_composition
+                else:
+                    my_dict[product] += int(quantity_composition)
+                comp = dict(zip(['quantity', 'measure'], [my_dict[product]*person_count, measure_composition]))
+                shop_dict[product] = comp
+
+    for key, value in shop_dict.items():
+        print(key, value)
 
 
-get_shop_list_by_dishes(['Запеченный картофель', 'Омлет'], 2)
+
+#get_shop_list_by_dishes(['Запеченный картофель', 'Омлет'], 2)
+# get_shop_list_by_dishes(['Фахитос', 'Омлет'], 2)
+get_shop_list_by_dishes(['Омлет', 'Омлет'], 2)
