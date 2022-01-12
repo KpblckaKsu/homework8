@@ -22,25 +22,26 @@ cook_book = cook_book()
 def get_shop_list_by_dishes(dishes, person_count):
     my_dict = {}
     shop_dict = {}
+    new_list = []
+    for x in dishes:
+        new_list.append(cook_book[x])
 
-    for dish, composition in cook_book.items():
-        if dish in dishes:
-            for ingr in composition:
-                product = ingr['ingredient_name']
-                quantity_composition = int(ingr['quantity'])
-                measure_composition = ingr['measure']
-                if product not in my_dict:
-                    my_dict[product] = quantity_composition
-                else:
-                    my_dict[product] += int(quantity_composition)
-                comp = dict(zip(['quantity', 'measure'], [my_dict[product]*person_count, measure_composition]))
-                shop_dict[product] = comp
-
+    for shop_list in new_list:
+        for ingredient in shop_list:
+            product = ingredient['ingredient_name']
+            quantity_composition = int(ingredient['quantity']) * person_count
+            measure_composition = ingredient['measure']
+            if product not in my_dict:
+                my_dict[product] = quantity_composition
+            else:
+                my_dict[product] += int(quantity_composition)
+            comp = dict(zip(['quantity', 'measure'], [my_dict[product], measure_composition]))
+            shop_dict[product] = comp
+    print('Новый запрос:')
     for key, value in shop_dict.items():
         print(key, value)
+    print()
 
-
-
-#get_shop_list_by_dishes(['Запеченный картофель', 'Омлет'], 2)
-# get_shop_list_by_dishes(['Фахитос', 'Омлет'], 2)
+get_shop_list_by_dishes(['Запеченный картофель', 'Омлет'], 2)
+get_shop_list_by_dishes(['Фахитос', 'Омлет'], 2)
 get_shop_list_by_dishes(['Омлет', 'Омлет'], 2)
